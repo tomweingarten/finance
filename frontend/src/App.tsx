@@ -497,14 +497,14 @@ export default function App() {
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                   <XAxis
                     dataKey="date"
-                    tickFormatter={d => fmtDate(d)}
+                    tickFormatter={(d: string) => fmtDate(d)}
                     tick={{ fontSize: 10, fill: '#94a3b8' }}
                     axisLine={false}
                     tickLine={false}
                     interval="preserveStartEnd"
                   />
                   <YAxis
-                    tickFormatter={v => money(v, true)}
+                    tickFormatter={(v: number) => money(v, true)}
                     tick={{ fontSize: 10, fill: '#94a3b8' }}
                     axisLine={false}
                     tickLine={false}
@@ -637,7 +637,7 @@ export default function App() {
                           tickLine={false}
                         />
                         <YAxis
-                          tickFormatter={v => money(v, true)}
+                          tickFormatter={(v: number) => money(v, true)}
                           tick={{ fontSize: 10, fill: '#94a3b8' }}
                           axisLine={false}
                           tickLine={false}
