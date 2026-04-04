@@ -1,45 +1,37 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float
 from .database import Base
-import datetime
 
-class User(Base):
-    __tablename__ = "users"
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-
-class Item(Base):
-    __tablename__ = "items"
-    id = Column(Integer, primary_key=True, index=True)
-    access_token = Column(String, unique=True)
-    item_id = Column(String, unique=True)
-    institution_id = Column(String)
-    institution_name = Column(String)
-    user_id = Column(Integer, ForeignKey("users.id"))
 
 class Account(Base):
     __tablename__ = "accounts"
     id = Column(Integer, primary_key=True, index=True)
-    account_id = Column(String, unique=True)
+    account_id = Column(String, unique=True)   # Empower userAccountId (as string)
     name = Column(String)
-    mask = Column(String)
-    official_name = Column(String)
-    type = Column(String)
-    subtype = Column(String)
-    balance_available = Column(Float)
-    balance_current = Column(Float)
-    balance_limit = Column(Float)
-    iso_currency_code = Column(String)
-    unofficial_currency_code = Column(String)
-    item_id = Column(Integer, ForeignKey("items.id"))
+    firm_name = Column(String)                 # Bank/brokerage name (e.g. "Chase")
+    nature = Column(String)                    # checking, savings, credit, investment
+    balance = Column(Float)
+    currency_code = Column(String)
+    account_number = Column(String)            # Masked (e.g. ****1234)
+
 
 class Transaction(Base):
     __tablename__ = "transactions"
     id = Column(Integer, primary_key=True, index=True)
-    transaction_id = Column(String, unique=True)
-    account_id = Column(String)
+    transaction_id = Column(String, unique=True)  # Empower userTransactionId
+    account_id = Column(String)                   # Empower userAccountId
     amount = Column(Float)
-    date = Column(DateTime)
-    name = Column(String)
-    merchant_name = Column(String)
+    made_on = Column(String)                      # YYYY-MM-DD
+    description = Column(String)
     category = Column(String)
-    pending = Column(Integer)
+    status = Column(String)                       # "posted" | "pending"
+
+
+class NetWorthSnapshot(Base):
+    """One row per day (upserted on sync) tracking net worth over time."""
+    __tablename__ = "networth_snapshots"
+    id = Column(Integer, primary_key=True, index=True)
+    date = Column(String, unique=True, index=True)  # YYYY-MM-DD
+    net_worth = Column(Float)
+    cash = Column(Float)
+    investments = Column(Float)
+    liabilities = Column(Float)                     # stored as negative number

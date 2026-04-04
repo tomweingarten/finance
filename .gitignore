@@ -1,6 +1,10 @@
 Tax_Documents/
 venv/
+node_modules/
 *.pyc
 __pycache__/
 .env
+.env~
 .DS_Store
+*.db
+empower_cookies.json
